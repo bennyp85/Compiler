@@ -1,0 +1,23 @@
+@startuml
+
+class Lexer {
+}
+
+class Parser {
+}
+
+class SemanticAnalyzer {
+}
+
+class CodeGenerator {
+}
+
+class Optimizer {
+}
+
+Lexer --> Parser
+Parser --> SemanticAnalyzer
+SemanticAnalyzer --> CodeGenerator
+CodeGenerator --> Optimizer
+
+@enduml
