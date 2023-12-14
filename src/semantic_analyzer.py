@@ -1,7 +1,9 @@
 class SemanticAnalyzer:
-   def __init__(self, parse_tree):
-       self.parse_tree = parse_tree
+    def __init__(self, parse_tree):
+        self.parse_tree = parse_tree
 
-   def analyze(self):
-       # This is a placeholder function. In a real semantic analyzer, this would contain code to check the parse tree for semantic errors.
-       pass
+    def analyze(self):
+        for node in self.parse_tree:
+            if node["type"] == "PRINT":
+                for value in node["values"]:
+                    assert type(value) == str, "Values must be strings."

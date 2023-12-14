@@ -1,23 +1,145 @@
 @startuml
 
 class Lexer {
++ tokenize(): List<Token>
+}
+
+class Token {
++ type: String
++ value: Object
 }
 
 class Parser {
++ parse(): ProgramNode
 }
 
-class SemanticAnalyzer {
+enum Type {
+PROGRAM
+FUNCTION_DECLARATION
+VARIABLE_DECLARATION
+STATEMENT_LIST
+RETURN
+ASSIGNMENT
+EXPRESSION
+IDENTIFIER
+INTEGER
+STRING
+BOOLEAN
+OPERATOR
+LEFT_PARENTHESIS
+RIGHT_PARENTHESIS
+LEFT_BRACE
+RIGHT_BRACE
+COMMA
 }
 
-class CodeGenerator {
+class ProgramNode {
++ children: List<StatementNode>
 }
 
-class Optimizer {
+abstract StatementNode {
 }
 
-Lexer --> Parser
-Parser --> SemanticAnalyzer
-SemanticAnalyzer --> CodeGenerator
-CodeGenerator --> Optimizer
+class FunctionDeclarationNode extends StatementNode {
++ name: IdentifierNode
++ parameters: List<IdentifierNode>
++ body: BlockNode
+}
+
+class VariableDeclarationNode extends StatementNode {
++ name: IdentifierNode
++ initialValue: ExpressionNode
+}
+
+class ReturnNode extends StatementNode {
++ expression: ExpressionNode
+}
+
+class AssignmentNode extends StatementNode {
++ leftHandSide: ExpressionNode
++ operator: OperatorNode
++ rightHandSide: ExpressionNode
+}
+
+interface ExpressionNode {
+}
+
+class IdentifierNode implements ExpressionNode {
++ name: String
+}
+
+class IntegerLiteralNode implements ExpressionNode {
++ value: Int
+}
+
+class BooleanLiteralNode implements ExpressionNode {
++ value: Bool
+}
+
+class StringLiteralNode implements ExpressionNode {
++ value: String
+}
+
+class UnaryOperatorNode implements ExpressionNode {
++ operator: OperatorNode
++ operand: ExpressionNode
+}
+
+class BinaryOperatorNode implements ExpressionNode {
++ leftOperand: ExpressionNode
++ operator: OperatorNode
++ rightOperand: ExpressionNode
+}
+
+class CallExpressionNode implements ExpressionNode {
++ callee: ExpressionNode
++ arguments: List<ExpressionNode>
+}
+
+class MemberAccessNode implements ExpressionNode {
++ object: ExpressionNode
++ property: String
+}
+
+class ParenthesizedExpressionNode implements ExpressionNode {
++ expression: ExpressionNode
+}
+
+class BlockNode implements StatementNode {
++ statements: List<StatementNode>
+}
+
+class IfElseNode extends StatementNode {
++ condition: ExpressionNode
++ thenBranch: StatementNode
++ elseBranch: StatementNode
+}
+
+class WhileLoopNode extends StatementNode {
++ condition: ExpressionNode
++ body: StatementNode
+}
+
+class ForLoopNode extends StatementNode {
++ initialization: StatementNode
++ condition: ExpressionNode
++ increment: StatementNode
++ body: StatementNode
+}
+
+class BreakNode extends StatementNode {
+}
+
+class ContinueNode extends StatementNode {
+}
+
+class OperatorNode {
++ symbol: String
++ precedence: Int
+}
+
+SemanticAnalyzer --> Parser
+CodeGenerator --> SemanticAnalyzer
+Optimizer --> CodeGenerator
 
 @enduml
